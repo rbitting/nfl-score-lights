@@ -13,13 +13,13 @@ param(
 Import-Module ./HueModule.psm1
 
 [bool]$isVerbose = $PSBoundParameters['Verbose'] -eq $True
-[String]$today = Get-Date -Format "yyyyMMdd"
-[String]$url = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=$today"
 
 Write-Verbose "Url: $url"
 $previousScore = 0;
 while ($True) {
   try {
+    [String]$today = Get-Date -Format "yyyyMMdd"
+    [String]$url = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=$today"
     $response = Invoke-RestMethod -Uri $url -Method Get
     $events = $response.events
     $eventFound = $False
