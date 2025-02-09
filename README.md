@@ -22,6 +22,10 @@ Quick and dirty implementation of a command line application to flash between tw
    HUE_SCENE_ID_COLOR1=id-of-first-color
    HUE_SCENE_ID_COLOR1=id-of-second-color
    ```
+4. (Optional) This application is set up to optionally send a pushbullet notification to all devices if an error occurs. Create an access token for your Pushbullet account, then add it to the `.env` file.
+   ```
+   PUSHBULLET_ACCESS_TOKEN=pushbullet-access-token
+   ```
 
 ## Run
 
