@@ -16,7 +16,7 @@ Import-Module ./PushbulletModule.psm1
 [bool]$isVerbose = $PSBoundParameters['Verbose'] -eq $True
 
 Write-Verbose "Url: $url"
-$previousScore = 0;
+$previousScore = 2;
 while ($True) {
   try {
     [String]$today = Get-Date -Format "yyyyMMdd"
@@ -40,8 +40,12 @@ while ($True) {
 
             # Check if the score has changed
             if ($currentScore -ne $previousScore) {
-              Write-Output "$(Get-Date) -- Score changed from $previousScore to $currentScore"
+              $logMessage = "$(Get-Date) -- Score changed from $previousScore to $currentScore"
+              Write-Output $logMessage
               $previousScore = $competitor.score;
+
+              # Send Pushbullet note
+              Send-PushbulletNote -Title "Triggering Light Flash" -Body $logMessage -Verbose:$isVerbose
 
               # Invoke Hue action
               Invoke-FlashLights -Verbose:$isVerbose

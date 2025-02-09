@@ -16,7 +16,7 @@ function Send-PushbulletNote {
   )
   [String]$pushbulletAccessToken = $Env:PUSHBULLET_ACCESS_TOKEN
   if ([string]::IsNullOrEmpty($pushbulletAccessToken)) {
-    Write-Output "No environment variable set for PUSHBULLET_ACCESS_TOKEN"
+    Write-Verbose "No environment variable set for PUSHBULLET_ACCESS_TOKEN"
     return
   }
 
