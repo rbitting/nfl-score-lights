@@ -40,8 +40,12 @@ while ($True) {
 
             # Check if the score has changed
             if ($currentScore -ne $previousScore) {
-              Write-Output "$(Get-Date) -- Score changed from $previousScore to $currentScore"
+              $logMessage = "$(Get-Date) -- Score changed from $previousScore to $currentScore"
+              Write-Output $logMessage
               $previousScore = $competitor.score;
+
+              # Send Pushbullet note
+              Send-PushbulletNote -Title "Triggering Light Flash" -Body $logMessage -Verbose:$isVerbose
 
               # Invoke Hue action
               Invoke-FlashLights -Verbose:$isVerbose
