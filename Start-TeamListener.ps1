@@ -6,11 +6,12 @@
 #>
 [CmdletBinding()]
 param(
-  [Parameter(Mandatory = $True, HelpMessage="Enter the NFL team abbreviation. Ex. 'PHI'")]
+  [Parameter(Mandatory = $True, HelpMessage = "Enter the NFL team abbreviation. Ex. 'PHI'")]
   [String]$TeamAbbreviation
 )
 
 Import-Module ./HueModule.psm1
+Import-Module ./PushbulletModule.psm1
 
 [bool]$isVerbose = $PSBoundParameters['Verbose'] -eq $True
 
@@ -56,7 +57,6 @@ while ($True) {
         # Throw error if team wasn't found
         # Edge case that isn't expected to be hit since there's already a check for the team in the event name
         if (!$teamFound) {
-          Write-Output $competitors
           throw "Team '$TeamAbbreviation' could not be found in competitors for event id $($event.id)"
         }
 
@@ -67,15 +67,16 @@ while ($True) {
 
     # Throw error if the event wasn't found
     if (!$eventFound) {
-      Write-Output $events
       throw "Event for '$TeamAbbreviation' could not be found on $today"
     }
 
     # Wait 10 seconds
     Start-Sleep -Seconds 10
   }
-  catch {  
-    Write-Host $_ -ForegroundColor Red # Log error
+  catch {
+    $errorMessage = $_
+    Send-PushbulletNote -Title "Score Lights Error" -Body $errorMessage -Verbose:$isVerbose
+    Write-Host $errorMessage -ForegroundColor Red # Log error
     exit 1
   }
 }
